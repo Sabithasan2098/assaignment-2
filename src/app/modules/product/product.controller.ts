@@ -62,28 +62,30 @@ const getProductById = async (req: Request, res: Response) => {
 }
 // ---------------------------------------------------//
 // update a product by id------------------------------>
-// const updateProductById = async (req: Request, res: Response) => {
-//   try {
-//     const { id } = req.params
-//     const product = req.body
-//     const result = await productService.updateProductInDB(id, product)
-//     res.status(200).json({
-//       success: true,
-//       message: "Product updated successfully!",
-//       data: result,
-//     })
-//   } catch (err) {
-//     res.status(500).json({
-//       success: false,
-//       message: "something went wrong to update product",
-//       error: err,
-//     })
-//   }
-// }
+const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    const updateData = req.body
+
+    const result = await productService.updateProductInDB(id, updateData)
+
+    res.status(200).json({
+      success: true,
+      message: "Update successful",
+      data: result,
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      error: error,
+    })
+  }
+}
 
 export const productController = {
   createProduct,
   getAllProduct,
   getProductById,
-  // updateProductById,
+  updateProduct,
 }
