@@ -24,6 +24,10 @@ const inventorySchema = new Schema<TInventory>({
 })
 
 export const productSchema = new Schema<TProduct>({
+  id: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
