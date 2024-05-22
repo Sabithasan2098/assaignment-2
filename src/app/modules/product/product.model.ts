@@ -58,6 +58,24 @@ export const productSchema = new Schema<TProduct>({
     type: inventorySchema,
     required: true,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+// don't show data which isDeleted field is true------------->
+productSchema.pre("find", function (next) {
+  this.find({ isDeleted: { $ne: true } })
+  next()
+})
+productSchema.pre("findOne", function (next) {
+  this.find({ isDeleted: { $ne: true } })
+  next()
+})
+productSchema.pre("aggregate", function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } })
+  next()
 })
 
 export const ProductModel = model<TProduct>("Product", productSchema)

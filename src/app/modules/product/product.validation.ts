@@ -56,5 +56,6 @@ const validateProduct = z.object({
   tags: z.array(z.string()).length(3),
   variants: z.array(validateVariants),
   inventory: validateInventory,
+  isDeleted: z.boolean(),
 })
 export default validateProduct

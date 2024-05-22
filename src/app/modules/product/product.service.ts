@@ -11,7 +11,7 @@ const getAllProductFromDB = async () => {
   return result
 }
 const getAProductFromDB = async (id: string) => {
-  const result = await ProductModel.findOne({ id })
+  const result = await ProductModel.aggregate([{ $match: { id } }])
   return result
 }
 
@@ -19,9 +19,16 @@ const updateProductInDB = async (id: string, updateData: TProduct) => {
   const result = await ProductModel.updateOne({ id: id }, { $set: updateData })
   return result
 }
+
+const deleteProductFromDB = async (id: string) => {
+  const result = await ProductModel.updateOne({ id }, { isDeleted: true })
+  return result
+}
+
 export const productService = {
   createProductIntoDB,
   getAllProductFromDB,
   getAProductFromDB,
   updateProductInDB,
+  deleteProductFromDB,
 }
