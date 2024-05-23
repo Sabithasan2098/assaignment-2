@@ -102,31 +102,32 @@ const deleteAProduct = async (req: Request, res: Response) => {
   }
 }
 
-// const searchProduct = async (req: Request, res: Response) => {
-//   try {
-//     const { searchTerm } = req.query
-//     const result = await productService.searchProductByText(
-//       searchTerm as string,
-//     )
-//     res.status(200).json({
-//       success: true,
-//       message: "Products matching search term 'iphone' fetched successfully!",
-//       data: result,
-//     })
-//   } catch (err) {
-//     res.status(500).json({
-//       success: false,
-//       message: "something went wrong",
-//       error: err,
-//     })
-//   }
-// }
-
+// search product into DB------------------------------>
+const searchProduct = async (req: Request, res: Response) => {
+  try {
+    const { searchTerm } = req.query
+    const result = await productService.searchProductByText(
+      searchTerm as string,
+    )
+    res.status(200).json({
+      success: true,
+      message: `Products matching searchTerm ${searchTerm} fetched successfully!`,
+      data: result,
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "something went wrong",
+      error: err,
+    })
+  }
+}
+// --------------------------------------------------//
 export const productController = {
   createProduct,
   getAllProduct,
   getProductById,
   updateProduct,
   deleteAProduct,
-  // searchProduct,
+  searchProduct,
 }
