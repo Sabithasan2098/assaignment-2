@@ -24,6 +24,10 @@ const deleteProductFromDB = async (id: string) => {
   const result = await ProductModel.updateOne({ id }, { isDeleted: true })
   return result
 }
+// const searchProductByText = async (searchTerm: string) => {
+//   const result = await ProductModel.find({ $search: searchTerm})
+//   return result
+// }
 
 export const productService = {
   createProductIntoDB,
@@ -31,4 +35,5 @@ export const productService = {
   getAProductFromDB,
   updateProductInDB,
   deleteProductFromDB,
+  // searchProductByText,
 }
