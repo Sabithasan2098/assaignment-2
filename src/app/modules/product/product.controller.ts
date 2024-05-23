@@ -1,15 +1,20 @@
 import { Request, Response } from "express"
-import { productService } from "./product.service"
 import validateProduct from "./product.validation"
+import {
+  createProductIntoDB,
+  deleteProductFromDB,
+  getAProductFromDB,
+  getAllProductFromDB,
+  searchProductByText,
+  updateProductInDB,
+} from "./product.service"
 
 // post a product--------------------------------------->
-const createProduct = async (req: Request, res: Response) => {
+export const createProduct = async (req: Request, res: Response) => {
   try {
     const { product } = req.body
     const validateProductWithZod = validateProduct.parse(product)
-    const result = await productService.createProductIntoDB(
-      validateProductWithZod,
-    )
+    const result = await createProductIntoDB(validateProductWithZod)
     res.status(200).json({
       success: true,
       message: "Product created successfully!",
@@ -25,9 +30,9 @@ const createProduct = async (req: Request, res: Response) => {
 }
 // ----------------------------------------------------//
 // get all product-------------------------------------->
-const getAllProduct = async (req: Request, res: Response) => {
+export const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const result = await productService.getAllProductFromDB()
+    const result = await getAllProductFromDB()
     res.status(200).json({
       success: true,
       message: "Products fetched successfully!",
@@ -43,10 +48,11 @@ const getAllProduct = async (req: Request, res: Response) => {
 }
 // ---------------------------------------------------//
 // get a product--------------------------------------->
-const getProductById = async (req: Request, res: Response) => {
+export const getProductById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
-    const result = await productService.getAProductFromDB(id)
+    const { productId } = req.params
+
+    const result = await getAProductFromDB(productId)
     res.status(200).json({
       success: true,
       message: "Product fetched successfully!",
@@ -62,12 +68,12 @@ const getProductById = async (req: Request, res: Response) => {
 }
 // ---------------------------------------------------//
 // update a product by id------------------------------>
-const updateProduct = async (req: Request, res: Response) => {
+export const updateProduct = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
-    const updateData = req.body
+    const { productId } = req.params
+    const updateData = req.body.product
 
-    const result = await productService.updateProductInDB(id, updateData)
+    const result = await updateProductInDB(productId, updateData)
 
     res.status(200).json({
       success: true,
@@ -84,14 +90,14 @@ const updateProduct = async (req: Request, res: Response) => {
 }
 // ---------------------------------------------------//
 // delete a product from db--------------------------->
-const deleteAProduct = async (req: Request, res: Response) => {
+export const deleteAProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
-    const result = await productService.deleteProductFromDB(id)
+    const result = await deleteProductFromDB(id)
     res.status(200).json({
       success: true,
       message: "Product deleted successfully!",
-      data: result.upsertedId,
+      data: result,
     })
   } catch (error) {
     res.status(500).json({
@@ -103,12 +109,10 @@ const deleteAProduct = async (req: Request, res: Response) => {
 }
 
 // search product into DB------------------------------>
-const searchProduct = async (req: Request, res: Response) => {
+export const searchProduct = async (req: Request, res: Response) => {
   try {
     const { searchTerm } = req.query
-    const result = await productService.searchProductByText(
-      searchTerm as string,
-    )
+    const result = await searchProductByText(searchTerm as string)
     res.status(200).json({
       success: true,
       message: `Products matching searchTerm ${searchTerm} fetched successfully!`,
@@ -121,13 +125,4 @@ const searchProduct = async (req: Request, res: Response) => {
       error: err,
     })
   }
-}
-// --------------------------------------------------//
-export const productController = {
-  createProduct,
-  getAllProduct,
-  getProductById,
-  updateProduct,
-  deleteAProduct,
-  searchProduct,
 }

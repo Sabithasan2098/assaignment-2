@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose"
 import { TOrder } from "./order.interface"
+import { ProductModel } from "../product/product.model"
 
 export const orderSchema = new Schema<TOrder>({
   email: {
@@ -8,9 +9,9 @@ export const orderSchema = new Schema<TOrder>({
     trim: true,
   },
   productId: {
-    type: String,
+    ref: ProductModel,
+    type: Schema.Types.ObjectId,
     required: true,
-    trim: true,
   },
   price: {
     type: Number,

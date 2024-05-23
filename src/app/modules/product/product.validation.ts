@@ -26,10 +26,6 @@ const validateInventory = z.object({
 })
 
 const validateProduct = z.object({
-  id: z
-    .string()
-    .min(1, { message: "The 'id' field must be at least 1 characters long." })
-    .max(100, { message: "The maximum length for 'id' is 100." }),
   name: z
     .string()
     .trim()

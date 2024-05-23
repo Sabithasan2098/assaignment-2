@@ -3,11 +3,11 @@ import validatedOrder from "./order.validation"
 import { orderService } from "./order.service"
 
 // post a product--------------------------------------->
-const createOrder = async (req: Request, res: Response) => {
+export const createOrder = async (req: Request, res: Response) => {
   try {
     const { order } = req.body
-    const validateProductWithZod = validatedOrder.parse(order)
-    const result = await orderService.createOrderIntoDB(validateProductWithZod)
+    const validateOrderWithZod = validatedOrder.parse(order)
+    const result = await orderService.createOrderIntoDB(validateOrderWithZod)
     res.status(200).json({
       success: true,
       message: "Order created successfully!",
@@ -23,7 +23,7 @@ const createOrder = async (req: Request, res: Response) => {
 }
 // ----------------------------------------------------//
 // get all product-------------------------------------->
-const getAllOrder = async (req: Request, res: Response) => {
+export const getAllOrder = async (req: Request, res: Response) => {
   try {
     const result = await orderService.getAllOrderFromDB()
     res.status(200).json({
@@ -42,7 +42,7 @@ const getAllOrder = async (req: Request, res: Response) => {
 
 // ---------------------------------------------------//
 // search a order use email as a searchTerm------------>
-const searchOrder = async (req: Request, res: Response) => {
+export const searchOrder = async (req: Request, res: Response) => {
   try {
     const { searchTerm } = req.query
     const result = await orderService.searchOrderByText(searchTerm as string)
@@ -60,8 +60,3 @@ const searchOrder = async (req: Request, res: Response) => {
   }
 }
 // ---------------------------------------------------//
-export const orderController = {
-  createOrder,
-  getAllOrder,
-  searchOrder,
-}
